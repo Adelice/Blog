@@ -3,6 +3,18 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
 from . import login_manager
 
+class Quote:
+    '''
+    quote class to define quote Objects
+    '''
+
+    def __init__(self,id,author,content,permalink):
+        self.id =id
+        self.author=author
+        self.content=content
+        self.permalink=permalink
+       
+
 class User(UserMixin,db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer,primary_key = True)
@@ -11,7 +23,8 @@ class User(UserMixin,db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     pass_secure = db.Column(db.String(255)) 
-    
+    posts=db.relationship('Post', backref='user', lazy='dynamic')
+    comments=db.relationship('Comment', backref='user', lazy='dynamic')
 
     @property
     def password(self):
@@ -33,69 +46,64 @@ class User(UserMixin,db.Model):
 def load_user(user_id):
   return User.query.get(int(user_id))   
 
-class Blog(db.Model):
-    __tablename__ = 'blogs'
+class Post(db.Model):
+    __tablename__ = 'post'
 
     id = db.Column(db.Integer,primary_key = True)
     user_id=db.Column(db.Integer,db.ForeignKey("users.id"))
-    description=db.Column(db.String(255))
-    
-    comments= db.relationship('Comment',backref = 'pitch',lazy="dynamic")
+    content=db.Column(db.String(255))
+    comments= db.relationship('Comment',backref = 'post',lazy="dynamic")
 
-    def save_blog(self):
+    def save_post(self):
         db.session.add(self)
         db.session.commit()
-#     @classmethod 
-#     def clear_pitches(cls):
-#         Pitch.search_pitches.clear()
-#     @classmethod
+    @classmethod 
+    def clear_posts(cls):
+        Post.search_posts.clear()
+    @classmethod
+    def get_post(cls,id):
+       post = Post.query.filter_by(user_id=id).all()
+       return post
+    @classmethod
+    def get_posts(cls):
+        posts=Post.query.filter_by().all()
+        return posts     
+    def delete_post(self,id):
+            comments = Comment.query.filter_by(id=id).all()
+            for comment in comments:
+                    db.session.delete(comment)
+                    db.session.commit()
+            db.session.delete(self)
+            db.session.commit()
+                            
 
-#     def get_pitche(cls,id):
-#         pitche = Pitch.query.filter_by(user_id=id).all()
-#         return pitche
-#     @classmethod
-#     def get_pitches(cls):
-#         pitches=Pitch.query.filter_by().all()
-#         return pitches    
 
-        
-
-
-#     def __repr__(self):
-#         return f'User {self.name}'
 #     pass_secure  = db.Column(db.String(255))
 
-# class Comment(db.Model):
-#     __tablename__ = 'comments'
-#     id = db.Column(db.Integer,primary_key = True)
-#     user_id=db.Column(db.Integer,db.ForeignKey("users.id"))
-#     pitch_id=db.Column(db.Integer, db.ForeignKey("pitch.id"))
-#     content=db.Column(db.String(255))
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer,primary_key = True)
+    user_id=db.Column(db.Integer,db.ForeignKey("users.id"))
+    post_id=db.Column(db.Integer, db.ForeignKey("post.id"))
+    content=db.Column(db.String(255))
     
-#     def save_comment(self):
-#         db.session.add(self)
-#         db.session.commit()
+    def save_comment(self):
+        db.session.add(self)
+        db.session.commit()
 
-#     @classmethod
-#     def clear_comments(cls):
-#         Comment.all_comments.clear()
+    @classmethod
+    def clear_comments(cls):
+        Comment.all_comments.clear()
 
-#     @classmethod
-#     def get_comments(cls,id):
-#         comments = Comment.query.filter_by(pitch_id=id).all()
-#         return comments
+    @classmethod
+    def get_comments(cls,id):
+        comments = Comment.query.filter_by(pitch_id=id).all()
+        return comments
 
-#     @classmethod
-#     def get_commentss(cls,id):
-#         comments = Comment.query.filter_by(user_id=id).all()
-#         return comments
+    @classmethod
+    def get_commentss(cls,id):
+        comments = Comment.query.filter_by(user_id=id).all()
+        return comments
 
-    
-# class PhotoProfile(db.Model):
-#     __tablename__ = 'profile_photos'
-
-#     id = db.Column(db.Integer,primary_key = True)
-#     pic_path = db.Column(db.String())
-#     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
     
 
