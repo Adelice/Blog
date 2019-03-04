@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+{% import 'macros.html' as macro%}
+{% if title %}
+<title>{{title}}</title>
+{% else %}
+<title> Welcome to MyBlogpost Page</title>
+{% endif %}
+{% block styles%}
+  {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
+{% endblock %}
+{% block content %}
+ 
+  <div class="post">
+   
+   <h4>{{post.content}}</h4>
+   <h6>{{post.author}}</h6>
+   
+   
+    
+    {{macro.displayComment(comments)}}
+  </div> 
+  
+{% endblock %}
+

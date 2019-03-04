@@ -7,21 +7,39 @@
         {% if title %}
         <title> {{ title }}</title>
         {% else %}
-        <title> Blogpost </title>
+        <title> WELCOME TO MyBlogpost </title>
         {% endif %}
          <!-- Styles block -->
        {% block styles%}
         {{ super() }}
-          <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
+          <link rel="stylesheet" href="{{url_for('static',filename='index.css')}}">
         {% endblock %}
     </head>
  {% block content %}
    <div class="container kk">
-   
-    {{macro.displayPosts(posts)}}<br>
-      <a href="/post/new/" class="btn btn-primary">Add post</a>
+     
+
+
+     
+     
+      <div class="quote">
+      <p>{{quote.quote}}</p>
+      <h6>Author {{quote.author}}</h6>
+      </div>
+      <div class= "add">
+          <a href="/post/new/" class="btn btn-primary">Add post</a>
+        </div>
+
+
+    
+     <div class="post">
+      {{macro.displayPosts(posts)}}<br>
+     </div>
+     <h3>If you to be notified of new Posts please subscribe below</h3>
+     {{wtf.quick_form(form)}}
 
     </div>  
+
     
  {% endblock %}
  </html>

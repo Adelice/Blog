@@ -8,10 +8,10 @@ class Quote:
     quote class to define quote Objects
     '''
 
-    def __init__(self,id,author,content,permalink):
+    def __init__(self,id,author,quote,permalink):
         self.id =id
         self.author=author
-        self.content=content
+        self.quote=quote
         self.permalink=permalink
        
 
@@ -52,6 +52,7 @@ class Post(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     user_id=db.Column(db.Integer,db.ForeignKey("users.id"))
     content=db.Column(db.String(255))
+    author=db.Column(db.String(255))
     comments= db.relationship('Comment',backref = 'post',lazy="dynamic")
 
     def save_post(self):
@@ -86,6 +87,7 @@ class Comment(db.Model):
     user_id=db.Column(db.Integer,db.ForeignKey("users.id"))
     post_id=db.Column(db.Integer, db.ForeignKey("post.id"))
     content=db.Column(db.String(255))
+    username=db.Column(db.String(255))
     
     def save_comment(self):
         db.session.add(self)
@@ -97,13 +99,24 @@ class Comment(db.Model):
 
     @classmethod
     def get_comments(cls,id):
-        comments = Comment.query.filter_by(pitch_id=id).all()
+        comments = Comment.query.filter_by(post_id=id).all()
         return comments
 
     @classmethod
     def get_commentss(cls,id):
         comments = Comment.query.filter_by(user_id=id).all()
         return comments
+   
+    def delete_comment(self):
+       db.session.delete(self)
+       db.session.commit()
+class Subscription(db.Model):
+    __tablename__='subs'  
+    id = db.Column(db.Integer,primary_key = True)
+    email=db.Column(db.String(255),unique = True, index=True)   
+
+
+
 
     
 

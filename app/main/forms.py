@@ -6,10 +6,13 @@ from ..models import User
 
 
 class AddPostForm(FlaskForm):
-    title=TextAreaField('Author', validators=[Required()])
+    author=TextAreaField('Author', validators=[Required()])
     content = TextAreaField('Post', validators = [Required()])  
-    
     submit = SubmitField('SUBMIT')  
 class CommentForm(FlaskForm):
-    comment = TextAreaField('Post comment' , validators=[Required()])
-    submit = SubmitField('submit')
+    content = TextAreaField('Comment' , validators=[Required()])
+    # username=TextAreaField('Username', validators=[Required()])
+    submit = SubmitField('SUBMIT')
+class SubscriptionForm(FlaskForm):
+    email = TextAreaField('Add Your Email' ,validators=[Required()]) 
+    submit= SubmitField('SUBMIT')   

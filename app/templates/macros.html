@@ -2,11 +2,28 @@
 {% for post in posts %}
   
            
+            <div class=container ll>
+
+           
+            <p>{{post.content}}</p>
+            <p>{{post.author}}</p><br>
+            <a href="/delete/post/{{post.id}}" class="btn btn-primary">Delete post</a>
+            <a href="/new/comment/{{post.id}}" class="btn btn-primary">Add comment</a>
+            <a href="/post/{{post.id}}" class="btn btn-primary">View comment</a>
+        </div>
             
-            <a href="/post/post.id">{{post.content}}</a>
+{% endfor %}
+{% endmacro %}
+                        
            
             
+{% macro displayComment(comments) %}
+{% for comment in comments%}
 
+<h4>Comments</h4>
+ <p>{{comment.content}}</p>
+ <!-- <p>{{comment.username}}</p> -->
+ <a href="/delete/comment/{{comment.id}}" class="btn btn-primary">delete comment</a> 
 
        
 {% endfor %}

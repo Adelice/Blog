@@ -15,19 +15,18 @@ def configure_request(app):
 
 def get_quote():
   
-
-    with urllib.request.urlopen(get_quote_details_url) as url:
-        quote_details_data = url.read()
-        quote_details_response = json.loads(quote_details_data)
+    # print(base_url)
+    with urllib.request.urlopen(base_url) as url:
+        get_quote_data = url.read()
+        get_quote_response = json.loads(get_quote_data)
 
         quote_object = None
-        if quote_details_response:
-            id = quote_details_response.get('id')
-            author = quote_details_response.get('author')
-            content = quote_details_response.get('quote')
-            permalink = quote_details_response.get('permalink')
-           
-          quote_object = Quote(id,author,content,permalink)
+        if get_quote_response:
+            id = get_quote_response.get('id')
+            author = get_quote_response.get('author')
+            quote = get_quote_response.get('quote')
+            permalink = get_quote_response.get('permalink')
+            quote_object = Quote(id,author,quote,permalink)
 
     return quote_object
 
