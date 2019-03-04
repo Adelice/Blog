@@ -11,7 +11,7 @@ class AddPostForm(FlaskForm):
     submit = SubmitField('SUBMIT')  
 class CommentForm(FlaskForm):
     content = TextAreaField('Comment' , validators=[Required()])
-    # username=TextAreaField('Username', validators=[Required()])
+    
     submit = SubmitField('SUBMIT')
 class SubscriptionForm(FlaskForm):
     email = TextAreaField('Add Your Email' ,validators=[Required()]) 

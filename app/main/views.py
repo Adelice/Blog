@@ -2,7 +2,7 @@ from flask import render_template,request,redirect,url_for,abort
 from ..models import  User,Post,Comment,Quote,Subscription
 from ..request import get_quote
 from . import main
-from .forms import AddPostForm,CommentForm,SubscriptionForm
+from .forms import AddPostForm,CommentForm,SubscriptionForm,UpdateForm
 from ..import db,photos
 from flask_login import login_required,current_user
 from ..email import mail_message
@@ -63,8 +63,8 @@ def add_comment(id):
     form=CommentForm()
     if form.validate_on_submit():
         content=form.content.data 
-        username=form.username.data
-        new_comment=Comment(content=content,username=username,post=post,user=user )
+       
+        new_comment=Comment(content=content,post=post,user=user )
         db.session.add(new_comment)
         db.session.commit()
 
