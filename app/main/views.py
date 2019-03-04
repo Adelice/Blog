@@ -1,13 +1,14 @@
 from flask import render_template,request,redirect,url_for,abort
-from ..models import  User,Post,Comment,Quote
+from ..models import  User,Post,Comment,Quote,Subscription
 from ..request import get_quote
 from . import main
-from .forms import AddPostForm,CommentForm
+from .forms import AddPostForm,CommentForm,SubscriptionForm
 from ..import db,photos
 from flask_login import login_required,current_user
+from ..email import mail_message
 # Views
 
-@main.route('/')
+@main.route('/' , methods = ['GET','POST'])
 def index():
 
     '''
@@ -19,7 +20,7 @@ def index():
         new_subscriber=Subscription(email=email)
         db.session.add(new_subscriber)
         db.session.commit()
-        mail_message("Thank you for subscribing!! We can't wait to send you quotes","email/welcome_subscriber",new_subscriber.email,new_subscriber=new_subscriber)
+        mail_message("Thank you for subscribing!! We can't wait to send you quotes","email/welcome_user",new_subscriber.email,new_subscriber=new_subscriber)
         return redirect(url_for('main.index'))
 
    
@@ -28,7 +29,7 @@ def index():
     quote=get_quote()
 
 
-    return render_template('index.html', title = title,posts=search_posts,quote=quote)
+    return render_template('index.html', title = title,posts=search_posts,quote=quote,form=form)
 
 
 @main.route('/post/new/', methods = ['GET','POST'])
@@ -84,4 +85,18 @@ def delete_post(id):
     if post is not None:
         post.delete_post(id)
         return redirect(url_for('main.index'))
-        
+@main.route('/update/post/<int:id>' , methods= ['GET','POST'])
+@login_required
+def update_post(id):
+    post=Post.query.filter_by(id=id).first()
+    if post is None:
+        abort(404)
+    form=UpdateForm() 
+    if form.validate_on_submit():
+        post.author=form.author.data
+        post.content=form.content.data
+
+        db.session.add(post)
+        db.session.commit()  
+        return redirect(url_for('main.index'))
+    return render_template('comments.html',comment_form=form)     

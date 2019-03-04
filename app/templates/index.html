@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {% import 'macros.html' as macro%}
+{% import "bootstrap/wtf.html" as wtf %}
 <!DOCTYPE html>
  <html>
     <head>
@@ -35,7 +36,7 @@
      <div class="post">
       {{macro.displayPosts(posts)}}<br>
      </div>
-     <h3>If you to be notified of new Posts please subscribe below</h3>
+     <h3>If you want to be notified of new Posts please subscribe below:</h3>
      {{wtf.quick_form(form)}}
 
     </div>  
