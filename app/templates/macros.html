@@ -7,10 +7,12 @@
            
             <p>{{post.content}}</p>
             <p>{{post.author}}</p><br>
+            <div class= "angela">
             <a href="/update/post/{{post.id}}" class="btn btn-primary">Update post</a>
             <a href="/delete/post/{{post.id}}" class="btn btn-primary">Delete post</a>
             <a href="/new/comment/{{post.id}}" class="btn btn-primary">Add comment</a>
             <a href="/post/{{post.id}}" class="btn btn-primary">View comment</a>
+            </div>
         </div>
             
 {% endfor %}
@@ -20,9 +22,10 @@
             
 {% macro displayComment(comments) %}
 {% for comment in comments%}
-
+<div class="comment">
 <h4>Comments</h4>
  <p>{{comment.content}}</p>
+</div>
  <!-- <p>{{comment.username}}</p> -->
  <a href="/delete/comment/{{comment.id}}" class="btn btn-primary">delete comment</a> 
 

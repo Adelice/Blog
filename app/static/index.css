@@ -6,4 +6,26 @@
 }
 .ll{
     background-color: lightcyan;
+
 }
+.kk{
+    font-family: 'Overpass', sans-serif;
+    font-size: 40px;
+    background-color: lightblue;
+}
+.quote{
+    
+    text-align:center; 
+    font-family: 'Inconsolata', monospace;
+    font-size:30px;
+}
+.angela{
+    
+}
+a:hover{
+    font-size:20px;
+}
+.inverse{
+    background-color:red;
+}
+    
