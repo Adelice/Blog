@@ -44,8 +44,9 @@ def add_post():
 
        new_post=Post(content=content, author=author)
        new_post.save_post()
-       for subscriber in subs:
-          mail_message("New Quote","email/notify",new_subscriber.email,subscriber=subscriber,new_post=new_post)
+       subscribers=Subscription.query.all()
+       for subscriber in subscribers:
+          mail_message("New Quote","email/notify",subscriber.email,subscriber=subscriber,new_post=new_post)
 
        return redirect(url_for('main.index'))
     search_posts = Post.query.all()
