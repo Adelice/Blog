@@ -99,4 +99,4 @@ def update_post(id):
         db.session.add(post)
         db.session.commit()  
         return redirect(url_for('main.index'))
-    return render_template('comments.html',comment_form=form)     
+    return render_template('update.html',update_form=form)     
